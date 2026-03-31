@@ -4,11 +4,79 @@ let inventory = JSON.parse(localStorage.getItem('bluelove_v3_inventory')) || [];
 let currentView = 'finances';
 let chartInstance = null;
 
+// REPLACE THIS WITH YOUR CLIENT ID FROM GOOGLE CLOUD CONSOLE
+const GOOGLE_CLIENT_ID = "170054180178-nh27grpjrdgqdvuvr3ihlbv1ihv45i3t.apps.googleusercontent.com";
+
 window.onload = () => {
+    initAuth();
     document.getElementById('currentDate').innerText = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' });
     document.getElementById('f-date').valueAsDate = new Date();
     renderDashboard();
 };
+
+function initAuth() {
+    const user = JSON.parse(localStorage.getItem('bluelove_v3_user'));
+    if (user) {
+        showApp();
+    } else {
+        google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleAuthResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById("google-btn"),
+            { theme: "outline", size: "large", shape: "pill", width: 280 }
+        );
+    }
+}
+
+const ALLOWED_EMAIL = "bluelove.bracelets.96@gmail.com";
+
+function handleAuthResponse(response) {
+    const payload = decodeJwt(response.credential);
+    
+    if (payload.email !== ALLOWED_EMAIL) {
+        alert("Access Denied: This dashboard is reserved for Bluelove Studio members.");
+        return;
+    }
+
+    const user = {
+        name: payload.name,
+        email: payload.email,
+        picture: payload.picture
+    };
+    localStorage.setItem('bluelove_v3_user', JSON.stringify(user));
+    showApp();
+}
+
+function decodeJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(window.atob(base64));
+}
+
+function showApp() {
+    document.getElementById('login-container').classList.add('hidden');
+    document.getElementById('main-app').classList.remove('hidden');
+    
+    const user = JSON.parse(localStorage.getItem('bluelove_v3_user'));
+    if (user) {
+        document.getElementById('currentDate').parentElement.innerHTML = `
+            <div class="flex items-center gap-3">
+                <div class="text-right">
+                    <p class="text-blue-900 font-bold text-sm">${user.name}</p>
+                    <p class="text-pink-400 text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:text-red-500" onclick="logout()">Logout</p>
+                </div>
+                <img src="${user.picture}" class="w-10 h-10 rounded-full border-2 border-pink-100 shadow-sm">
+            </div>
+        `;
+    }
+}
+
+function logout() {
+    localStorage.removeItem('bluelove_v3_user');
+    window.location.reload();
+}
 
 function switchView(view) {
     currentView = view;

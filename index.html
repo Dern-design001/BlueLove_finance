@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="p-4 md:p-8">
 
@@ -22,8 +23,27 @@
         <div class="girlish-heart heart-2">❤</div>
     </div>
 
+    <!-- LOGIN SCREEN -->
+    <div id="login-container" class="fixed inset-0 flex items-center justify-center z-[100] animate-fade-in">
+        <div class="glass-card rounded-[3rem] p-12 max-w-sm w-full text-center space-y-8 shadow-2xl">
+            <div class="w-24 h-24 bg-pink-500 rounded-3xl mx-auto flex items-center justify-center text-white bluelove-glow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            </div>
+            <div>
+                <h2 class="text-3xl font-extrabold text-blue-900 tracking-tight">Bluelove</h2>
+                <p class="text-pink-400 font-bold uppercase tracking-[0.2em] text-xs">Atelier Studio</p>
+            </div>
+            <p class="text-gray-500 font-medium">Please sign in to access your premium studio dashboard.</p>
+            
+            <div class="flex justify-center">
+                <div id="google-btn"></div>
+            </div>
+            
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest pt-4">Secure Authentication by Google</p>
+        </div>
+    </div>
 
-    <div class="max-w-6xl mx-auto">
+    <div id="main-app" class="max-w-6xl mx-auto hidden">
         <!-- Floating Header -->
         <header class="glass-card rounded-3xl p-6 mb-8 animate-fade-in" style="animation-delay: 0.1s;">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -259,6 +279,7 @@
         </div>
     </div>
 
+    </div> <!-- Close main-app -->
     <script src="main.js"></script>
 </body>
 </html>
