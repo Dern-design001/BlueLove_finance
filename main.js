@@ -36,7 +36,8 @@ function handleAuthResponse(response) {
     const payload = decodeJwt(response.credential);
     
     if (payload.email !== ALLOWED_EMAIL) {
-        alert("Access Denied: This dashboard is reserved for Bluelove Studio members.");
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('denied-screen').classList.remove('hidden');
         return;
     }
 
