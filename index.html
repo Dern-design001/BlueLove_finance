@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluelove Bracelets | Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Background Animations -->
+    <div class="bg-animate-container">
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        <div class="bg-circle bg-circle-3"></div>
+        <div class="girlish-sparkle sparkle-1">✨</div>
+        <div class="girlish-sparkle sparkle-2">✨</div>
+        <div class="girlish-heart heart-1">❤</div>
+        <div class="girlish-heart heart-2">❤</div>
+    </div>
+
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Floating Header -->
+        <header class="glass-card rounded-3xl p-6 mb-8 animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white bluelove-glow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-blue-900 tracking-tight">Bluelove Studio</h1>
+                        <nav class="flex gap-4 mt-1">
+                            <button onclick="switchView('finances')" id="nav-finances" class="nav-link active text-xs font-bold uppercase tracking-widest text-blue-400 hover:text-blue-600">Finances</button>
+                            <button onclick="switchView('inventory')" id="nav-inventory" class="nav-link text-xs font-bold uppercase tracking-widest text-blue-400 hover:text-blue-600">Inventory</button>
+                        </nav>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-6">
+                    <div class="hidden md:block text-right">
+                        <p id="currentDate" class="text-blue-900 font-bold text-sm"></p>
+                        <p class="text-blue-400 text-xs">Premium Management</p>
+                    </div>
+                    <button id="mainActionBtn" onclick="toggleModal()" class="btn-gradient text-white px-8 py-3 rounded-2xl font-bold flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        <span id="btnText">New Entry</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- FINANCES VIEW -->
+        <div id="view-finances" class="view-container">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-card p-6 rounded-3xl animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-green-100 text-green-600 rounded-xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                        </div>
+                        <span class="text-gray-500 font-semibold text-sm">Total Revenue</span>
+                    </div>
+                    <h2 id="totalIncome" class="text-3xl font-extrabold text-gray-900">₹0.00</h2>
+                </div>
+                <div class="glass-card p-6 rounded-3xl animate-fade-in" style="animation-delay: 0.3s;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-red-100 text-red-600 rounded-xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 12-7 7-7-7"/><path d="M12 5v14"/></svg>
+                        </div>
+                        <span class="text-gray-500 font-semibold text-sm">Total Expenses</span>
+                    </div>
+                    <h2 id="totalSpent" class="text-3xl font-extrabold text-gray-900">₹0.00</h2>
+                </div>
+                <div class="glass-card p-6 rounded-3xl animate-fade-in bg-white/40" style="animation-delay: 0.4s;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a2 2 0 0 0 0 4h15a1 1 0 0 0 1-1v-4"/><path d="M17 12h.01"/></svg>
+                        </div>
+                        <span class="text-gray-500 font-semibold text-sm">Net Savings</span>
+                    </div>
+                    <h2 id="totalSaved" class="text-3xl font-extrabold text-blue-600">₹0.00</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-card rounded-3xl overflow-hidden animate-fade-in" style="animation-delay: 0.5s;">
+                        <div class="p-6 border-b border-white/20 flex justify-between items-center bg-white/20">
+                            <h3 class="font-bold text-gray-800 text-lg">Finance Stream</h3>
+                            <select id="filterType" onchange="renderFinances()" class="bg-white/50 border-none rounded-xl px-4 py-2 text-sm font-semibold text-blue-900 outline-none focus:ring-2 focus:ring-blue-400">
+                                <option value="all">All Logs</option>
+                                <option value="income">Income Only</option>
+                                <option value="expense">Expenses Only</option>
+                            </select>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="text-blue-400 text-xs uppercase tracking-widest font-bold">
+                                    <tr>
+                                        <th class="px-8 py-5">Date</th>
+                                        <th class="px-8 py-5">Details</th>
+                                        <th class="px-8 py-5 text-right">Value</th>
+                                        <th class="px-8 py-5"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionBody" class="divide-y divide-white/10"></tbody>
+                            </table>
+                            <div id="financeEmpty" class="hidden p-20 text-center">
+                                <p class="text-blue-400 font-medium italic">No financial footprints yet...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="glass-card p-8 rounded-3xl">
+                        <h3 class="font-bold text-gray-800 mb-6 flex items-center gap-2">Analysis</h3>
+                        <canvas id="financeChart" height="280"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INVENTORY VIEW -->
+        <div id="view-inventory" class="view-container hidden">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-card p-6 rounded-3xl animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold">#</div>
+                        <span class="text-gray-500 font-semibold text-sm">Unique Materials</span>
+                    </div>
+                    <h2 id="totalMaterials" class="text-3xl font-extrabold text-gray-900">0</h2>
+                </div>
+                <div class="glass-card p-6 rounded-3xl animate-fade-in" style="animation-delay: 0.3s;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </div>
+                        <span class="text-gray-500 font-semibold text-sm">Low Stock Alerts</span>
+                    </div>
+                    <h2 id="lowStockCount" class="text-3xl font-extrabold text-amber-600">0</h2>
+                </div>
+                <div class="glass-card p-6 rounded-3xl animate-fade-in" style="animation-delay: 0.4s;">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                        </div>
+                        <span class="text-gray-500 font-semibold text-sm">Total Units</span>
+                    </div>
+                    <h2 id="totalUnits" class="text-3xl font-extrabold text-gray-900">0</h2>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-3xl overflow-hidden animate-fade-in" style="animation-delay: 0.5s;">
+                <div class="p-6 border-b border-white/20 flex justify-between items-center bg-white/20">
+                    <h3 class="font-bold text-gray-800 text-lg">Material Inventory</h3>
+                    <div class="flex gap-4">
+                        <input type="text" id="inventorySearch" oninput="renderInventory()" placeholder="Search materials..." class="bg-white/50 border-none rounded-xl px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-400 w-64">
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="text-blue-400 text-xs uppercase tracking-widest font-bold">
+                            <tr>
+                                <th class="px-8 py-5">Material Name</th>
+                                <th class="px-8 py-5">Type</th>
+                                <th class="px-8 py-5">Color</th>
+                                <th class="px-8 py-5 text-right">Qty</th>
+                                <th class="px-8 py-5"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryBody" class="divide-y divide-white/10"></tbody>
+                    </table>
+                    <div id="inventoryEmpty" class="hidden p-20 text-center">
+                        <p class="text-blue-400 font-medium italic">No materials listed yet...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Finance Modal -->
+    <div id="modal-finances" class="fixed inset-0 bg-blue-900/20 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-card rounded-[2.5rem] max-w-md w-full p-10 animate-fade-in shadow-2xl">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-gray-900">New Transaction</h2>
+                    <p class="text-blue-500 text-sm font-medium">Bluelove Ledger</p>
+                </div>
+                <button onclick="toggleModal()" class="text-gray-400 hover:text-red-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form id="financeForm" class="space-y-6">
+                <input type="text" id="f-desc" required placeholder="Label (e.g. Blue Wave Set)" class="w-full bg-white/50 border-2 border-transparent focus:border-blue-400 rounded-2xl px-5 py-3 outline-none transition-all font-medium">
+                <div class="grid grid-cols-2 gap-4">
+                    <select id="f-type" class="w-full bg-white/50 border-2 border-transparent focus:border-blue-400 rounded-2xl px-4 py-3 outline-none font-semibold">
+                        <option value="income">Inflow (₹)</option>
+                        <option value="expense">Outflow (₹)</option>
+                    </select>
+                    <input type="number" id="f-amount" required step="0.01" placeholder="Amount" class="w-full bg-white/50 border-2 border-transparent focus:border-blue-400 rounded-2xl px-5 py-3 outline-none font-bold">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <select id="f-category" class="w-full bg-white/50 border-2 border-transparent focus:border-blue-400 rounded-2xl px-4 py-3 outline-none">
+                        <option value="Bracelets">Bracelets</option>
+                        <option value="Mystery Box">Mystery Box</option>
+                        <option value="Phonecase Hang">Phonecase Hang</option>
+                        <option value="Materials">Materials</option>
+                    </select>
+                    <input type="date" id="f-date" required class="w-full bg-white/50 border-2 border-transparent focus:border-blue-400 rounded-2xl px-4 py-3 outline-none">
+                </div>
+                <button type="submit" class="w-full btn-gradient text-white py-4 rounded-2xl font-bold text-lg">Save Transaction</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Inventory Modal -->
+    <div id="modal-inventory" class="fixed inset-0 bg-blue-900/20 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-card rounded-[2.5rem] max-w-md w-full p-10 animate-fade-in shadow-2xl">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-gray-900">Add Material</h2>
+                    <p class="text-blue-500 text-sm font-medium">Inventory Stock</p>
+                </div>
+                <button onclick="toggleModal()" class="text-gray-400 hover:text-red-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form id="inventoryForm" class="space-y-6">
+                <input type="text" id="m-name" required placeholder="Material Name (e.g. Glass Beads)" class="w-full bg-white/50 border-2 border-transparent focus:border-blue-400 rounded-2xl px-5 py-3 outline-none font-medium">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">Pick Color</label>
+                        <div class="bg-white/50 border-2 border-transparent hover:border-blue-300 rounded-2xl p-1 transition-all overflow-hidden flex items-center h-12">
+                            <input type="color" id="m-color" value="#1e40af" class="cursor-pointer">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">Category</label>
+                        <select id="m-type" class="w-full bg-white/50 border-2 border-transparent focus:border-blue-400 rounded-2xl px-4 py-3 outline-none font-semibold h-12">
+                            <option value="Beads">Beads</option>
+                            <option value="Threads">Threads</option>
+                            <option value="Clasps">Clasps</option>
+                            <option value="Charms">Charms</option>
+                            <option value="Packaging">Packaging</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">Stock Quantity</label>
+                    <input type="number" id="m-quantity" required placeholder="Initial Units" class="w-full bg-white/50 border-2 border-transparent focus:border-blue-400 rounded-2xl px-5 py-3 outline-none font-bold">
+                </div>
+                <button type="submit" class="w-full btn-gradient text-white py-4 rounded-2xl font-bold text-lg">Register Material</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
